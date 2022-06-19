@@ -1,0 +1,66 @@
+# info.yaml
+---
+Data:
+  - name: "btc"
+    url: "https://www.coingecko.com/en/coins/bitcoin"
+    xpath: "/html/body/div[5]/div[4]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
+
+  - name: "klay"
+    url: "https://dexata.kr/?tokenA=0x0000000000000000000000000000000000000000&tokenB=0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167"
+    xpath: "/html/body/app-root/route-index/div/div/trading-view-chart/div[2]/div[1]/div[1]/div[2]"
+
+  - name: "c2x"
+    url: "https://coinmarketcap.com/en/currencies/c2x"
+    xpath: "//*[@id='__next']/div/div[1]/div[2]/div/div[1]/div[2]/div/div[2]/div[1]/div"
+
+  - name: "kfi"
+    url: "https://dexata.kr/?tokenA=0xdb116e2dc96b4e69e3544f41b50550436579979a&tokenB=0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167"
+    xpath: "/html/body/app-root/route-index/div/div/trading-view-chart/div[2]/div[1]/div[1]/div[2]"
+
+  - name: "mkc"
+    url: "https://dexata.kr/?tokenA=0x119883ee408aa5b9625c5d09a79fa8be9f9f6017&tokenB=0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167"
+    xpath: "/html/body/app-root/route-index/div/div/trading-view-chart/div[2]/div[1]/div[1]/div[2]"
+
+  - name: "syl"
+    url: "https://dex.guru/token/0x92925acf2771bc59143228499f9610fe5176eb9c-eth"
+    xpath: "//*[@id='root']/div[1]/div[1]/div/div[2]/div[1]/div[2]/div[2]/div[1]/span[2]/span"
+
+  - name: "zipcy"
+    url: "https://opensea.io/collection/supernormalbyzipcy?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+
+  - name: "grilla"
+    url: "https://opensea.io/collection/g-rilla-official?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+
+  - name: "poo_villa"
+    url: "https://opensea.io/collection/puuvillasociety?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+
+  - name: "sunmiya"
+    url: "https://opensea.io/collection/smilemiyaclub?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+
+  - name: "momoco"
+    url: "https://opensea.io/collection/official-momoco?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+
+  - name: "syltare_common"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+
+  - name: "syltare_rare"
+    url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Rare&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+
+  - name: "syltare_super_rare"
+    url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Super%20Rare&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+
+  - name: "syltare_legend"
+    url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Legendary&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+
+  - name: "syltare_ether"
+    url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[stringTraits][0][name]=Element&search[stringTraits][0][values][0]=Ether"
+    xpath: "//*[@id='main']/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
