@@ -1,8 +1,7 @@
-from random import randint
+import threading
 
-import pandas as pd
 import pymysql
-import yaml
+import telegram_api as telegram
 
 import chrome_selenium
 
@@ -25,11 +24,19 @@ class CoinInfo:
         self.alarm_percentage = yaml_info['alarm_percentage']
 
     def addPrice(self, t):
-        print("searching price for coin", self.name)
+        print("searching price for coin", self.name, end=" - ")
         price = float(self.webcrawler.findElement(self.url, self.xpath))
-        print(self.name, price)
+        print(price)
+
         if price == -1:
             return -1
+        else:
+            if price > 1:
+                price = float("{:.2f}".format(price))
+            else:
+                price = float("{:.4f}".format(price))
+
+
         # self.ys.append(price)
         # self.ys.append(randint(0, 100))
         # self.ys = self.ys[-80000:]
@@ -59,15 +66,25 @@ class CoinInfo:
             return price
 
     def checkMarkCondition(self):
+        EMOTICON_GREEN = "\U0001F7E2"
+        EMOTICON_RED = "\U0001F534"
+
         if self.mark_price is None:
+            # for initial
             self.mark_price = self.price
             return True
         else:
+            backup_mark_price = self.mark_price
             top_band = self.mark_price * (100 + self.alarm_percentage) / 100;
             bot_band = self.mark_price * (100 - self.alarm_percentage) / 100;
 
-            print("top_band: %s, bot_band: %s" % (top_band, bot_band))
             if self.price > top_band or self.price < bot_band:
+                if self.price > self.mark_price:
+                    emoticon = EMOTICON_GREEN
+                else:
+                    emoticon = EMOTICON_RED
+                telegram.send_msg("%s [%s] %s -> %s (%.2f%)"
+                                  % (emoticon, self.name, self.mark_price, self.price, self.price/self.mark_price - 1))
                 self.mark_price = self.price
                 return True
             else:

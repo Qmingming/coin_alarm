@@ -1,8 +1,10 @@
+import asyncio
 import datetime as dt
 import sys
+import threading
 import time
 from threading import Thread
-import telegram_bot3 as tele
+import telegram_api as tele
 
 import matplotlib.dates
 import matplotlib.dates as md
@@ -58,8 +60,9 @@ class Worker(QObject):
             time.sleep(5)
 
     def run(self):
-        thread = Thread(target=self.fetch_coin_price, args=(self.coin_list,))
-        thread.start()
+        th = Thread(target=self.fetch_coin_price, args=(self.coin_list,))
+        th.name = 'fetch_coin_price'
+        th.start()
 
 
 class MyWindow(QMainWindow, form_class):
@@ -70,12 +73,16 @@ class MyWindow(QMainWindow, form_class):
         self.setupUi(self)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
+        # parse coin info. from Yaml
         configs = YamlParser("info.yaml").parse()
+        # set number of coin info. as row count of tableWidget
         self.tableWidget.setRowCount(len(configs['Data']))
 
-        self.coin_list.clear()
+        #self.coin_list.clear()
         for idx, config in enumerate(configs['Data']):
+            # append coin yaml information to coin_list
             self.coin_list.append(CoinInfo(config))
+            # set coin name in tableWidget
             self.setTableValue(idx, 0, config['name'])
 
         worker = Worker(self.coin_list)
@@ -132,7 +139,7 @@ def animate(i, coin_list):
         chart.xaxis.set_major_formatter(md.DateFormatter('%H:%M'))  # optional formatting
         chart.set_xlabel('time')
         chart.set_ylabel(coin.name)
-        # chart.set_legend()
+        # chart.set_legend()`
     plt.subplots_adjust(bottom=0.30)
     print(t)
     fig.canvas.draw()
@@ -142,12 +149,20 @@ def animate(i, coin_list):
     # plt.pause(5)
 
 
+def run_telegram_bot():
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(tele.main())
+    loop.close()
+
+
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    tele.init()
+
+    thread = threading.Thread(target=run_telegram_bot)
+    thread.name = 'thread_telegram'
+    thread.start()
+
     myWindow = MyWindow()
     myWindow.show()
     app.exec_()
-
-    # plt.show()
-    # realtime_chart(False)  # 175 fps
