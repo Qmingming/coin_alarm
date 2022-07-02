@@ -61,6 +61,10 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
     """Send a message when the command /help is issued."""
     await update.message.reply_text("Help!")
 
+async def get_chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send a message when the command /help is issued."""
+    await bot.sendPhoto(CHATID_ME, photo=open('capture.png', "rt"))
+
 
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle the inline query. This is run when you type: @botusername <query>"""
@@ -116,6 +120,7 @@ def main():
     # on different commands - answer in Telegram
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
+    application.add_handler(CommandHandler("get_chart", get_chart_command))
 
     # on non command i.e message - echo the message on Telegram
     application.add_handler(InlineQueryHandler(inline_query))
