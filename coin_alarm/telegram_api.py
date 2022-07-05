@@ -63,7 +63,12 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 async def get_chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
-    await bot.sendPhoto(CHATID_ME, photo=open('capture.png', "rt"))
+
+    try:
+        pic = open('D:\python_workspace\coin_alarm\capture.png', 'rb')
+        await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
+    except Exception as e:
+        print(e)
 
 
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -101,6 +106,21 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 async def bot_send_msg(msg):
     await bot.send_message(text=msg, chat_id=CHATID_ME)
 
+async def bot_send_pic(pic):
+    try:
+        pic = open(pic, 'rb')
+        await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
+    except Exception as e:
+        print(e)
+
+def send_pic(pic):
+    try:
+        loop = asyncio.get_event_loop()
+    except RuntimeError:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+    finally:
+        loop.run_until_complete(bot_send_pic(pic))
 
 def send_msg(msg):
     try:

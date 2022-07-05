@@ -1,4 +1,6 @@
+import os
 import threading
+import time
 
 import pandas
 import pymysql
@@ -24,22 +26,25 @@ class CoinInfo:
         self.name = yaml_info['name']
         self.url = yaml_info['url']
         self.xpath = yaml_info['xpath']
+        self.xpath2 = yaml_info['xpath2']
         self.alarm_percentage = yaml_info['alarm_percentage']
-
         self.ax = None
 
     def addPrice(self, t):
-        print("searching price for coin", self.name, end=" - ")
-        price = float(self.webcrawler.findElement(self.url, self.xpath))
-        print(price)
+        try:
+            print("%s searching price for coin %s" % (t, self.name), end=" - ")
+            price = float(self.webcrawler.findElement(self))
+            print(price)
 
-        if price == -1:
-            return -1
-        else:
-            if price > 1:
-                price = float("{:.2f}".format(price))
+            if price == -1:
+                return -1
             else:
-                price = float("{:.4f}".format(price))
+                if price > 1:
+                    price = float("{:.2f}".format(price))
+                else:
+                    price = float("{:.4f}".format(price))
+        except Exception as e:
+            print(e)
 
         # self.ys.append(price)
         # self.ys.append(randint(0, 100))
@@ -69,7 +74,7 @@ class CoinInfo:
             self.price = price
             return price
 
-    def checkMarkCondition(self):
+    def checkMarkCondition(self, chart_signal):
         EMOTICON_GREEN = "\U0001F7E2"
         EMOTICON_RED = "\U0001F534"
 
@@ -90,6 +95,12 @@ class CoinInfo:
                 telegram.send_msg("%s [%s] %s -> %s (%.2f%%)"
                                   % (emoticon, self.name, self.mark_price, self.price, (self.price/self.mark_price-1)*100))
                 self.mark_price = self.price
+
+                chart_signal.emit(self.name)
+
+                time.sleep(1)
+                telegram.send_pic('capture.png')
+
                 return True
             else:
                 return False

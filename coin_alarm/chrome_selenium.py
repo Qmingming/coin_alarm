@@ -20,16 +20,25 @@ class ChromeSelenium:
     def __init__(self):
         pass
 
-    def findElement(self, url, xpath):
+    def findElement(self, coin):
         try:
             for i in range(40):
                 try:
-                    self.driver.get(url=url)
+                    self.driver.get(url=coin.url)
                     time.sleep(1)
-                    element = self.driver.find_elements(by=By.XPATH, value=xpath)
+
+                    if "opensea" in coin.url:
+                        element = self.driver.find_elements(by=By.XPATH, value=coin.xpath2)
+                        content_name = element[0].text
+                        print("content name", content_name, end=" - ")
+                        if "Offer".casefold() in content_name.casefold():
+                            print("caught offer case", end=" - ")
+                            return -1
+
+                    element = self.driver.find_elements(by=By.XPATH, value=coin.xpath)
                     element = element[0].text
                 except Exception as e:
-                    #print("An exception of {0} type occurred".format(type(e)))
+                    print(str(e), end=" - ")
                     continue
                 else:
                     break
