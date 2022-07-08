@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import pandas
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, QObject, pyqtSignal
-from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QBrush, QScreen
 from PyQt5.QtWidgets import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
@@ -116,10 +116,10 @@ class MyWindow(QMainWindow, form_class):
             else:
                 continue
         '''
+    def run_price_alarm(self):
         worker = Worker(self.coin_list)
         worker.update_price_signal.connect(self.setTableValue)
         worker.update_chart_signal.connect(self.plot)
-
         worker.run()
 
     def setTableValue(self, row, column, value):
@@ -227,7 +227,7 @@ class MyWindow(QMainWindow, form_class):
                     self.chart.set_xlim([start_time, end_time])
                     # self.chart.set_ylim(y.mean() * 0.9, y.mean() * 1.1)
                     self.canvas.draw()
-                    self.fig.savefig('capture.png')
+                    self.fig.savefig('plot.png')
                     #time.sleep(5)
 
                 except Exception as e:
@@ -235,27 +235,34 @@ class MyWindow(QMainWindow, form_class):
 
                 return
 
+    def save_table_image(self):
+        p = QScreen.grabWindow(app.primaryScreen(), self.tableWidget.winId())
+        p.save('table.png', 'png')
+
     def test(self):
-        print("save photo")
-        self.fig.savefig('capture.png')
-        telegram.send_pic('capture.png')
-        telegram.send_msg('test')
+        try:
+            p = QScreen.grabWindow(app.primaryScreen(), self.tableWidget.winId())
+            p.save('plot.png', 'png')
+            telegram.send_pic('plot.png')
+        except Exception as e:
+            print(e)
 
 
-def run_telegram_bot():
+def run_telegram_bot(myWindow):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.run_until_complete(telegram.main())
+    loop.run_until_complete(telegram.main(myWindow))
     loop.close()
-
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    thread = threading.Thread(target=run_telegram_bot)
+    myWindow = MyWindow()
+
+    thread = threading.Thread(target=run_telegram_bot, args=(myWindow,))
     thread.name = 'thread_telegram'
     thread.start()
 
-    myWindow = MyWindow()
+    myWindow.run_price_alarm()
     myWindow.show()
     app.exec_()

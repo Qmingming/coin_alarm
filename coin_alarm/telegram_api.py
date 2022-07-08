@@ -39,37 +39,55 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
         f"{TG_VER} version of this example, "
         f"visit https://docs.python-telegram-bot.org/en/v{TG_VER}/examples.html"
     )
-from telegram import InlineQueryResultArticle, InputTextMessageContent, Update
+from telegram import InlineQueryResultArticle, InputTextMessageContent, ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
 from telegram.constants import ParseMode
-from telegram.ext import Application, CommandHandler, ContextTypes, InlineQueryHandler
+from telegram.ext import (
+    Application,
+    CommandHandler,
+    ContextTypes,
+    ConversationHandler,
+    MessageHandler,
+    filters,
+)
 
 # Enable logging
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s", level=logging.INFO
 )
+
 logger = logging.getLogger(__name__)
 
+CHOOSING, TYPING_REPLY, TYPING_CHOICE = range(3)
+reply_keyboard = []
 
 # Define a few command handlers. These usually take the two arguments update and
 # context.
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-    """Send a message when the command /start is issued."""
-    await update.message.reply_text("Hi!")
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
     await update.message.reply_text("Help!")
 
+'''
 async def get_chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
 
     try:
-        pic = open('D:\python_workspace\coin_alarm\capture.png', 'rb')
+        pic = open(r'D:\python_workspace\coin_alarm\plot.png', 'rb')
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
     except Exception as e:
         print(e)
+'''
 
+async def get_table_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send a message when the command /help is issued."""
+
+    try:
+        Win.save_table_image()
+        pic = open(r"D:\python_workspace\coin_alarm\table.png", 'rb')
+        await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
+    except Exception as e:
+        print(e)
 
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle the inline query. This is run when you type: @botusername <query>"""
@@ -102,6 +120,44 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
     await update.inline_query.answer(results)
 
+async def get_chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Start the conversation and ask user for input."""
+    await update.message.reply_text(
+        "Select the chart you want to get from below list",
+        reply_markup=markup,
+    )
+
+    return CHOOSING
+
+async def regular_choice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Ask the user for info about the selected predefined choice."""
+    text = update.message.text
+    context.user_data["choice"] = text
+    print(text)
+    #await update.message.reply_text(f"Your {text.lower()}? Yes, I would love to hear about that!")
+    Win.plot(text)
+    try:
+        pic = open(r'D:\python_workspace\coin_alarm\plot.png', 'rb')
+        await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
+    except Exception as e:
+        print(e)
+
+    context.user_data.clear()
+    return ConversationHandler.END
+
+async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Display the gathered info and end the conversation."""
+    user_data = context.user_data
+    if "choice" in user_data:
+        del user_data["choice"]
+
+    await update.message.reply_text(
+        #f"I learned these facts about you: {facts_to_str(user_data)}Until next time!",
+        #reply_markup=ReplyKeyboardRemove(),
+    )
+
+    user_data.clear()
+    return ConversationHandler.END
 
 async def bot_send_msg(msg):
     await bot.send_message(text=msg, chat_id=CHATID_ME)
@@ -131,19 +187,45 @@ def send_msg(msg):
     finally:
         loop.run_until_complete(bot_send_msg(msg))
 
-
-def main():
+def main(myWindow):
     """Run the bot."""
+    global Win
+    Win = myWindow
+
+
+    for idx, coin in enumerate(Win.coin_list):
+        reply_keyboard.append([])
+        reply_keyboard[idx].append(coin.name)
+    print(reply_keyboard)
+    global markup
+    markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
+
+
     # Create the Application and pass it your bot's token.
     application = Application.builder().token(USER_TOKEN).build()
 
     # on different commands - answer in Telegram
-    application.add_handler(CommandHandler("start", start))
+    #application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
-    application.add_handler(CommandHandler("get_chart", get_chart_command))
+    #application.add_handler(CommandHandler("get_chart", get_chart_command))
+    application.add_handler(CommandHandler("get_table", get_table_command))
+
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler("get_chart", get_chart_command)],
+        states={
+            CHOOSING: [
+                MessageHandler(
+                    filters.TEXT, regular_choice
+                ),
+                #MessageHandler(filters.Regex("^Something else...$"), help),
+            ],
+        },
+        fallbacks=[MessageHandler(filters.TEXT, done)],
+    )
+    application.add_handler(conv_handler)
 
     # on non command i.e message - echo the message on Telegram
-    application.add_handler(InlineQueryHandler(inline_query))
+    #application.add_handler(InlineQueryHandler(inline_query))
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()

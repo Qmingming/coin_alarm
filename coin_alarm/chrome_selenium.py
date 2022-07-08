@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 class ChromeSelenium:
     options = webdriver.ChromeOptions()
-    #options.add_argument('headless')
+    options.add_argument('headless')
     options.add_argument('disable-gpu')
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument('--disable-blink-features=AutomationControlled')
@@ -38,7 +38,7 @@ class ChromeSelenium:
                     element = self.driver.find_elements(by=By.XPATH, value=coin.xpath)
                     element = element[0].text
                 except Exception as e:
-                    print(str(e), end=" - ")
+                    #print(str(e), end=" - ")
                     continue
                 else:
                     break

@@ -99,7 +99,7 @@ class CoinInfo:
                 chart_signal.emit(self.name)
 
                 time.sleep(1)
-                telegram.send_pic('capture.png')
+                telegram.send_pic('plot.png')
 
                 return True
             else:
