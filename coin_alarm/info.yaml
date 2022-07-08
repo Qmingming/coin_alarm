@@ -11,7 +11,7 @@ Data:
 
   - name: "eth"
     url: "https://www.coingecko.com/en/coins/ethereum"
-    xpath: "/html/body/div[5]/div[5]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
+    xpath: "/html/body/div[5]/div[4]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
     xpath2: "n/a"
     alarm_percentage: 5
     chart_num: 0
