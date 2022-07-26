@@ -23,6 +23,8 @@ import telegram
 from sqlalchemy.util import asyncio
 from telegram import __version__ as TG_VER
 
+from coin_alarm.coin_info import CoinInfo
+
 USER_TOKEN = "5576835435:AAHxTLt6KiDKh4XWNiFcrn0_wqcRmDbHbD8"
 CHATID_ME = "501305840"
 
@@ -86,6 +88,16 @@ async def get_table_command(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         Win.save_table_image()
         pic = open(r"D:\python_workspace\coin_alarm\table.png", 'rb')
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
+    except Exception as e:
+        print(e)
+
+async def turn_alarm_off(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+    """Send a message when the command /help is issued."""
+
+    try:
+        print("alarm_stop: %s " % CoinInfo.alarm_stop)
+        CoinInfo.alarm_stop = 1
+        print("alarm_stop: %s " % CoinInfo.alarm_stop)
     except Exception as e:
         print(e)
 
@@ -162,26 +174,30 @@ async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 async def bot_send_msg(msg):
     await bot.send_message(text=msg, chat_id=CHATID_ME)
 
-async def bot_send_pic(pic):
+async def bot_send_pic(pic, msg):
     try:
         pic = open(pic, 'rb')
-        await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
+        await bot.sendPhoto(chat_id=CHATID_ME, photo=pic, caption=msg)
     except Exception as e:
         print(e)
 
 def send_pic(pic):
+    print("send pic")
     try:
         loop = asyncio.get_event_loop()
-    except RuntimeError:
+    except RuntimeError as e:
+        print(e)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
     finally:
         loop.run_until_complete(bot_send_pic(pic))
 
 def send_msg(msg):
+    print("send msg - %s" % msg)
     try:
         loop = asyncio.get_event_loop()
-    except RuntimeError:
+    except RuntimeError as e:
+        print(e)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
     finally:
@@ -209,6 +225,7 @@ def main(myWindow):
     application.add_handler(CommandHandler("help", help_command))
     #application.add_handler(CommandHandler("get_chart", get_chart_command))
     application.add_handler(CommandHandler("get_table", get_table_command))
+    application.add_handler(CommandHandler("turn_alarm_off", turn_alarm_off))
 
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler("get_chart", get_chart_command)],

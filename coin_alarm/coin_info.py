@@ -16,6 +16,7 @@ class CoinInfo:
     engine = create_engine('mysql+pymysql://root:12345@127.0.0.1:3306/coin_price')
     conn = pymysql.connect(host='127.0.0.1', user='root', password='12345', db='coin_price', charset='utf8')
     cur = conn.cursor()
+    alarm_stop = 0
 
     def __init__(self, yaml_info):
         self.price = None
@@ -78,37 +79,49 @@ class CoinInfo:
         EMOTICON_GREEN = "\U0001F7E2"
         EMOTICON_RED = "\U0001F534"
 
-        if self.mark_price is None:
-            # for initial
-            self.mark_price = self.price
-            return True
-        else:
-            backup_mark_price = self.mark_price
-            top_band = self.mark_price * (100 + self.alarm_percentage) / 100;
-            bot_band = self.mark_price * (100 - self.alarm_percentage) / 100;
-
-            if self.price > top_band or self.price < bot_band:
-                if self.price > self.mark_price:
-                    emoticon = EMOTICON_GREEN
-                else:
-                    emoticon = EMOTICON_RED
-                telegram.send_msg("%s [%s] %s -> %s (%.2f%%)"
-                                  % (emoticon, self.name, self.mark_price, self.price, (self.price/self.mark_price-1)*100))
+        try:
+            self.alarm_stop = 0
+            if self.mark_price is None or self.price == 0:
+                # for initial
                 self.mark_price = self.price
-
-                chart_signal.emit(self.name)
-
-                time.sleep(1)
-                telegram.send_pic('plot.png')
-
                 return True
             else:
-                return False
+                if self.alarm_percentage == "n/a":
+                    return False
+                backup_mark_price = self.mark_price
+                top_band = self.mark_price * (100 + self.alarm_percentage) / 100;
+                bot_band = self.mark_price * (100 - self.alarm_percentage) / 100;
+
+                if self.price > top_band or self.price < bot_band:
+                    # send chart
+                    chart_signal.emit(self.name)
+                    time.sleep(1)
+                    telegram.send_pic('plot.png', self.price)
+
+                    # send message
+                    emoticon = EMOTICON_GREEN if self.price > self.mark_price else EMOTICON_RED
+                    increase_percent = (self.price / self.mark_price - 1) * 100
+                    repeat_cnt = 7 if increase_percent < -20 else 1
+
+                    for x in range(repeat_cnt):
+                        telegram.send_msg("%s [%s] %s -> %s (%.2f%%)"
+                                          % (emoticon, self.name, self.mark_price, self.price, increase_percent))
+                        if self.alarm_stop == 1:
+                            break
+                    self.alarm_stop = 0
+                    self.mark_price = self.price
+                    return True
+                else:
+                    return False
+        except Exception as e:
+            template = "An exception of type {0} occurred. Arguments:\n{1!r}"
+            message = template.format(type(e).__name__, e.args)
+            return False
 
     def getChartData(self):
         msg = "SELECT date, %s FROM crypto ORDER BY date DESC LIMIT %d" % (self.name, 7000)
-        #day = 3
-        #time_interval = 3 * 24
-        #msg = "SELECT date, %s FROM crypto WHERE date >= NOW() - INTERVAL %s day_hour GROUP BY FLOOR(UNIX_TIMESTAMP(date)/ ( %s * 60))" % (self.name, day, time_interval)
+        # day = 3
+        # time_interval = 3 * 24
+        # msg = "SELECT date, %s FROM crypto WHERE date >= NOW() - INTERVAL %s day_hour GROUP BY FLOOR(UNIX_TIMESTAMP(date)/ ( %s * 60))" % (self.name, day, time_interval)
         df = pandas.read_sql_query(msg, self.engine)
         return df

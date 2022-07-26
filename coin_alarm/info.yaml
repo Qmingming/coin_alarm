@@ -1,11 +1,27 @@
 # info.yaml
 ---
 Data:
+  - name: "dollar"
+    url: "https://finance.daum.net/exchanges"
+    xpath: "//*[@id='boxMajorExchanages']/div[1]/div/div[22]/li/span[1]/strong"
+    xpath2: "n/a"
+    alarm_percentage: "n/a"
+    chart_num: 0
+    series: 0
+
+  - name: "kim_pre"
+    url: "https://scolkg.com/"
+    xpath: "/html/body/div/div[5]/div[9]/div[1]/div[4]/div/div[1]/div[1]/div[1]/div[2]/div/div[2]/span"
+    xpath2: "n/a"
+    alarm_percentage: "n/a"
+    chart_num: 0
+    series: 0
+
   - name: "btc"
     url: "https://www.coingecko.com/en/coins/bitcoin"
     xpath: "/html/body/div[5]/div[4]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
     xpath2: "n/a"
-    alarm_percentage: 5
+    alarm_percentage: 1
     chart_num: 0
     series: 0
 
@@ -13,7 +29,7 @@ Data:
     url: "https://www.coingecko.com/en/coins/ethereum"
     xpath: "/html/body/div[5]/div[4]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
     xpath2: "n/a"
-    alarm_percentage: 5
+    alarm_percentage: 1
     chart_num: 0
     series: 1
 
@@ -21,37 +37,29 @@ Data:
     url: "https://www.coingecko.com/en/coins/fantom"
     xpath: "/html/body/div[5]/div[4]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
     xpath2: "n/a"
-    alarm_percentage: 5
-    chart_num: 1
-    series: 0
-
-  - name: "klay"
-    url: "https://dexata.kr/?tokenA=0x0000000000000000000000000000000000000000&tokenB=0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167"
-    xpath: "/html/body/app-root/route-index/div/div[2]/token-trading-view-chart/div[2]/div[1]/div[1]/div[2]"
-    xpath2: "n/a"
-    alarm_percentage: 5
-    chart_num: 1
+    alarm_percentage: 1
+    chart_num: 2
     series: 1
 
   - name: "syltare_common"
-    url: "https://opensea.io/collection/syltare-dawn-of-east?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
-    xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
-    xpath2: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
-    alarm_percentage: 5
-    chart_num: 2
-    series: 0
-
-  - name: "syltare_rare"
-    url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Rare&search[toggles][0]=BUY_NOW"
+    url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Common"
     xpath: "//*[@id='main']/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
     xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
     alarm_percentage: 5
-    chart_num: 2
-    series: 1
+    chart_num: 3
+    series: 0
+
+  - name: "syltare_rare"
+    url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Rare"
+    xpath: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
 
   - name: "syltare_super_rare"
     url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Super%20Rare&search[toggles][0]=BUY_NOW"
-    xpath: "//*[@id='main']/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
     xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
     alarm_percentage: 5
     chart_num: 3
@@ -59,7 +67,7 @@ Data:
 
   - name: "syltare_legend"
     url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Legendary&search[toggles][0]=BUY_NOW"
-    xpath: "//*[@id='main']/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
     xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
     alarm_percentage: 5
     chart_num: -1
@@ -67,19 +75,11 @@ Data:
 
   - name: "syltare_ether"
     url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[stringTraits][0][name]=Element&search[stringTraits][0][values][0]=Ether"
-    xpath: "//*[@id='main']/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
     xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
     alarm_percentage: 5
     chart_num: 3
     series: 1
-
-  - name: "mkc"
-    url: "https://dexata.kr/?tokenA=0x119883ee408aa5b9625c5d09a79fa8be9f9f6017&tokenB=0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167"
-    xpath: "/html/body/app-root/route-index/div/div[2]/token-trading-view-chart/div[2]/div[1]/div[1]/div[2]"
-    xpath2: "n/a"
-    alarm_percentage: 5
-    chart_num: 4
-    series: 0
 
   - name: "syl"
     url: "https://dex.guru/token/0x92925acf2771bc59143228499f9610fe5176eb9c-eth"
@@ -115,6 +115,22 @@ Data:
 
   - name: "grilla"
     url: "https://opensea.io/collection/g-rilla-official?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: -1
+    series: -1
+
+  - name: "super_grilla"
+    url: "https://opensea.io/collection/super-g-rilla-official?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
+    xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: -1
+    series: -1
+
+  - name: "meta_kongz"
+    url: "https://opensea.io/collection/meta-kongz-official?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
     xpath: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
     xpath2: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
     alarm_percentage: 5

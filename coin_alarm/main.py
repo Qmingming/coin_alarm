@@ -200,9 +200,9 @@ class MyWindow(QMainWindow, form_class):
                     self.chart.plot(x, y, '-', label=coin.name)
                     self.chart.grid(True, which='both')
                     #self.chart.set_ylabel(coin.name)
-                    self.chart.set_title(coin.name, fontsize=30, pad=20)
+                    self.chart.set_title(coin.name, fontsize=25, pad=18)
                     #plt.subplots_adjust(left=0.1, bottom=0.05, right=0.93, top=0.95, hspace=0.5, wspace=0.4)
-                    self.fig.subplots_adjust(left=0.1, right=0.93, bottom=0.1, top=0.85)
+                    self.fig.subplots_adjust(left=0.1, right=0.93, bottom=0.08, top=0.9)
 
                     time_interval = 12
                     self.chart.xaxis.set_major_locator(md.DayLocator(interval=1))
@@ -259,9 +259,9 @@ if __name__ == "__main__":
 
     myWindow = MyWindow()
 
-    thread = threading.Thread(target=run_telegram_bot, args=(myWindow,))
-    thread.name = 'thread_telegram'
-    thread.start()
+    #thread = threading.Thread(target=run_telegram_bot, args=(myWindow,))
+    #thread.name = 'thread_telegram'
+    #thread.start()
 
     myWindow.run_price_alarm()
     myWindow.show()
