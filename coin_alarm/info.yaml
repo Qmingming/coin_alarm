@@ -19,7 +19,7 @@ Data:
 
   - name: "btc"
     url: "https://www.coingecko.com/en/coins/bitcoin"
-    xpath: "/html/body/div[5]/div[4]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
+    xpath: "/html/body/div[5]/div[5]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
     xpath2: "n/a"
     alarm_percentage: 1
     chart_num: 0
@@ -27,7 +27,7 @@ Data:
 
   - name: "eth"
     url: "https://www.coingecko.com/en/coins/ethereum"
-    xpath: "/html/body/div[5]/div[4]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
+    xpath: "/html/body/div[5]/div[5]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
     xpath2: "n/a"
     alarm_percentage: 1
     chart_num: 0
@@ -35,7 +35,23 @@ Data:
 
   - name: "ftm"
     url: "https://www.coingecko.com/en/coins/fantom"
-    xpath: "/html/body/div[5]/div[4]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
+    xpath: "/html/body/div[5]/div[5]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
+    xpath2: "n/a"
+    alarm_percentage: 1
+    chart_num: 2
+    series: 1
+
+  - name: "klay"
+    url: "https://www.coingecko.com/en/coins/klay"
+    xpath: "/html/body/div[5]/div[5]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
+    xpath2: "n/a"
+    alarm_percentage: 1
+    chart_num: 2
+    series: 1
+
+  - name: "sand"
+    url: "https://www.coingecko.com/en/coins/the-sandbox"
+    xpath: "/html/body/div[5]/div[5]/div[1]/div/div[1]/div[3]/div/div[1]/span[1]/span"
     xpath2: "n/a"
     alarm_percentage: 1
     chart_num: 2
@@ -43,7 +59,7 @@ Data:
 
   - name: "syltare_common"
     url: "https://opensea.io/assets/syltare-dawn-of-east?search[resultModel]=ASSETS&search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Common"
-    xpath: "//*[@id='main']/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
     xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
     alarm_percentage: 5
     chart_num: 3
@@ -81,29 +97,117 @@ Data:
     chart_num: 3
     series: 1
 
+  - name: "syl_common_45"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=45&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Common"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_common_46"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=46&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Common"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_common_47"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=47&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Common"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_common_48"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=48&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Common"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_common_49"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=49&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Common"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_common_50"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=50&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Common"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_rare_56"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=56&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Rare"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_rare_57"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=57&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Rare"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_rare_58"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=58&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Rare"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_rare_59"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=59&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Rare"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
+  - name: "syl_rare_60"
+    url: "https://opensea.io/collection/syltare-dawn-of-east?search[numericTraits][0][name]=Attack&search[numericTraits][0][ranges][0][min]=60&search[numericTraits][0][ranges][0][max]=80&search[sortAscending]=true&search[sortBy]=UNIT_PRICE&search[stringTraits][0][name]=Rarity&search[stringTraits][0][values][0]=Rare"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[2]/div[2]"
+    xpath2: "/html/body/div[1]/div/div/main/div/div/div/div[3]/div[3]/div[3]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: 3
+    series: 0
+
   - name: "syl"
-    url: "https://dex.guru/token/0x92925acf2771bc59143228499f9610fe5176eb9c-eth"
-    xpath: "//*[@id='root']/div[1]/div[1]/div/div[2]/div[1]/div[2]/div[2]/div[1]/span[2]/span"
+    url: "https://www.geckoterminal.com/eth/pools/0xff4b5466b025472f8f6ccca9deec48c8d3bfe273"
+    xpath: "//*[@id='pool-price-display']"
     xpath2: "n/a"
     alarm_percentage: 5
     chart_num: 4
     series: 1
 
-  - name: "c2x"
-    url: "https://coinmarketcap.com/en/currencies/c2x"
-    xpath: "//*[@id='__next']/div/div[1]/div[2]/div/div[1]/div[2]/div/div[2]/div[1]/div"
-    xpath2: "n/a"
-    alarm_percentage: 5
-    chart_num: 5
-    series: 0
-
-  - name: "kfi"
-    url: "https://dexata.kr/?tokenA=0xdb116e2dc96b4e69e3544f41b50550436579979a&tokenB=0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167"
-    xpath: "/html/body/app-root/route-index/div/div[2]/token-trading-view-chart/div[2]/div[1]/div[1]/div[2]"
-    xpath2: "n/a"
-    alarm_percentage: 5
-    chart_num: 5
-    series: 1
+#  - name: "c2x"
+#    url: "https://coinmarketcap.com/en/currencies/c2x"
+#    xpath: "//*[@id='__next']/div/div[1]/div[2]/div/div[1]/div[2]/div/div[2]/div[1]/div"
+#    xpath2: "n/a"
+#    alarm_percentage: 5
+#    chart_num: 5
+#    series: 0
+#
+#  - name: "kfi"
+#    url: "https://dexata.kr/?tokenA=0xdb116e2dc96b4e69e3544f41b50550436579979a&tokenB=0xcee8faf64bb97a73bb51e115aa89c17ffa8dd167"
+#    xpath: "/html/body/app-root/route-index/div/div[2]/token-trading-view-chart/div[2]/div[1]/div[1]/div[2]"
+#    xpath2: "n/a"
+#    alarm_percentage: 5
+#    chart_num: 5
+#    series: 1
 
   - name: "zipcy"
     url: "https://opensea.io/collection/supernormalbyzipcy?search[sortAscending]=true&search[sortBy]=PRICE&search[toggles][0]=BUY_NOW"
@@ -161,3 +265,10 @@ Data:
     chart_num: -1
     series: -1
 
+  - name: "belly_gom"
+    url: "https://opensea.io/collection/bellygom-world-official"
+    xpath: "/html/body/div[1]/div/main/div/div/div[5]/div/div[1]/div/div[3]/div/div[8]/a/div/span[1]/div"
+    xpath2: "//*[@id='main']/div/div/div[5]/div/div[3]/div[3]/div[3]/div[4]/div[2]/div/div/div[1]/div/article/a/div[2]/div[2]/div/div/div[1]"
+    alarm_percentage: 5
+    chart_num: -1
+    series: -1

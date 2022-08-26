@@ -4,6 +4,7 @@ import time
 
 import pandas
 import pymysql
+import logging
 from sqlalchemy import create_engine
 
 import telegram_api as telegram
@@ -33,7 +34,7 @@ class CoinInfo:
 
     def addPrice(self, t):
         try:
-            print("%s searching price for coin %s" % (t, self.name), end=" - ")
+            #logging.info("%s searching price for coin %s" % (t, self.name), end=" - ")
             price = float(self.webcrawler.findElement(self))
             print(price)
 
@@ -59,7 +60,8 @@ class CoinInfo:
             field_names = [i[0] for i in self.cur.description]
             if self.name not in field_names:
                 msg = "ALTER TABLE crypto ADD %s FLOAT" % self.name
-                # print(msg)
+                self.cur.execute(msg)
+                msg = "INSERT INTO crypto (date, %s) VALUES ('%s', '%s')" % (self.name, t, 0)
                 self.cur.execute(msg)
 
             msg = "INSERT INTO crypto (date, %s) VALUES ('%s', '%s')" % (self.name, t, price)
@@ -68,6 +70,8 @@ class CoinInfo:
         except Exception as e:
             # print(e)
             msg = "UPDATE crypto SET %s = %s WHERE date = '%s'" % (self.name, price, t)
+            self.cur.execute(msg)
+
             # print(msg)
             self.cur.execute(msg)
         finally:
@@ -96,7 +100,7 @@ class CoinInfo:
                     # send chart
                     chart_signal.emit(self.name)
                     time.sleep(1)
-                    telegram.send_pic('plot.png', self.price)
+                    telegram.send_pic('plot.png')
 
                     # send message
                     emoticon = EMOTICON_GREEN if self.price > self.mark_price else EMOTICON_RED
