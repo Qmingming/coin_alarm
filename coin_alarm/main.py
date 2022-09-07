@@ -11,15 +11,15 @@ import matplotlib.dates as md
 import matplotlib.pyplot as plt
 import pandas
 import pymysql
-from PyQt5 import uic
-from PyQt5.QtCore import Qt, QObject, pyqtSignal
+from PyQt5 import uic, QtWidgets
+from PyQt5.QtCore import Qt, QObject, pyqtSignal, QTimer
 from PyQt5.QtGui import QBrush, QScreen
 from PyQt5.QtWidgets import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 import telegram_api as telegram
-from coin_alarm.coin_info import CoinInfo
-from coin_alarm.yaml_parser import YamlParser
+from coin_info import CoinInfo
+from yaml_parser import YamlParser
 
 form_class = uic.loadUiType("gui.ui")[0]
 # Create figure for plotting
@@ -314,9 +314,13 @@ class MyWindow(QMainWindow, form_class):
 
                 return
 
+    def screenshot(self):
+        screen = QtWidgets.QApplication.primaryScreen()
+        screenshot = screen.grabWindow(self.tableWidget.winId())
+        screenshot.save('table.png', 'png')
+
     def save_table_image(self):
-        p = QScreen.grabWindow(app.primaryScreen(), self.tableWidget.winId())
-        p.save('table.png', 'png')
+        QTimer.singleShot(1, self.screenshot)
 
     def test(self):
         try:

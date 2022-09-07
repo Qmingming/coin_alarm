@@ -112,6 +112,7 @@ class CoinInfo:
                                           % (emoticon, self.name, self.mark_price, self.price, increase_percent))
                         if self.alarm_stop == 1:
                             break
+                        time.sleep(2)
                     self.alarm_stop = 0
                     self.mark_price = self.price
                     return True

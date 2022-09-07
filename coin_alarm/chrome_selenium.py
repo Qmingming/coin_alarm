@@ -21,7 +21,7 @@ class ChromeSelenium:
 
     def __init__(self):
         cap = DesiredCapabilities().FIREFOX
-        cap["marionette"] = False
+        cap["marionette"] = True
         options = webdriver.FirefoxOptions()
         #options.add_argument('headless')
         #options.add_argument('disable-gpu')

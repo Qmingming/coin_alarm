@@ -27,7 +27,7 @@ import telegram
 from sqlalchemy.util import asyncio
 from telegram import __version__ as TG_VER
 
-from coin_alarm.coin_info import CoinInfo
+from coin_info import CoinInfo
 
 USER_TOKEN = "5576835435:AAHxTLt6KiDKh4XWNiFcrn0_wqcRmDbHbD8"
 CHATID_ME = "501305840"
