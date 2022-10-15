@@ -17,6 +17,7 @@ bot.
 import html
 import json
 import logging
+import os
 import threading
 import traceback
 from datetime import time
@@ -114,8 +115,10 @@ async def get_table_command(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     """Send a message when the command /help is issued."""
 
     try:
-        Win.save_table_image()
-        pic = open(r"D:\python_workspace\coin_alarm\table.png", 'rb')
+        Win.screenshot()
+        base_dir = os.getcwd()
+        filename = r'table.png'
+        pic = open(os.path.join(base_dir, filename), 'rb')
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
     except Exception as e:
         print(e)
@@ -178,7 +181,11 @@ async def regular_choice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
     #await update.message.reply_text(f"Your {text.lower()}? Yes, I would love to hear about that!")
     Win.plot(text)
     try:
-        pic = open(r'D:\python_workspace\coin_alarm\plot.png', 'rb')
+        base_dir = os.getcwd()
+        filename = r'plot.png'
+        pic = open(os.path.join(base_dir, filename), 'rb')
+
+
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
     except Exception as e:
         print(e)

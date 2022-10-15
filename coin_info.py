@@ -36,7 +36,7 @@ class CoinInfo:
         try:
             #logging.info("%s searching price for coin %s" % (t, self.name), end=" - ")
             price = float(self.webcrawler.findElement(self))
-            print(price)
+            print(t, self.name, price)
 
             if price == -1:
                 return -1

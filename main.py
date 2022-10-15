@@ -123,10 +123,6 @@ class MyWindow(QMainWindow, form_class):
             new_property_value = []
 
             for idx, config in enumerate(yaml_info):
-                if idx == 0:
-                    config['name'] = 'fuk7'
-                elif idx == 1:
-                    config['name'] = 'fuk10'
                 if config['name'] not in field_names:
                     msg = "ALTER TABLE crypto ADD %s FLOAT" % config['name']
                     cur.execute(msg)
@@ -340,6 +336,7 @@ def run_telegram_bot(myWindow):
 
 if __name__ == "__main__":
     try:
+        app = QApplication(sys.argv)
         #start_time = datetime.now().strftime("%Y%m%d_%H%M%S")
         #logging.basicConfig(filename='start_time.log', encoding='utf-8', level=logging.DEBUG)
         #logging.info("logging started at %s" %start_time)
