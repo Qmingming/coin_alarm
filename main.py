@@ -280,31 +280,16 @@ class MyWindow(QMainWindow, form_class):
                     self.chart.xaxis.set_tick_params(which='major', pad=18)
                     self.chart.xaxis.set_minor_locator(md.MinuteLocator(interval=(time_interval*60)))
                     self.chart.xaxis.set_minor_formatter(md.DateFormatter('%H'))
-
                     self.chart.xaxis.remove_overlapping_locs = False
 
-                    year = int(datetime.datetime.now().strftime("%Y"))
-                    month = int(datetime.datetime.now().strftime("%m"))
-                    day = int(datetime.datetime.now().strftime("%d"))
-                    hour = int(datetime.datetime.now().strftime("%H"))
-                    hour_modified = hour + (time_interval - (hour % time_interval))
-                    if hour_modified >= 24:
-                        hour_modified = 0
-                        day = day + 1
-                        if day > 31:
-                            day = 1
-                            month = month + 1
-                            if month == 13:
-                                month = 1
-                    end_time = datetime.datetime(year, month, day, hour_modified, 0)
+                    now = datetime.datetime.now()
+                    end_time = now + datetime.timedelta(hours=(time_interval - now.hour%time_interval))
                     start_time = end_time - datetime.timedelta(days=7)
 
                     self.chart.set_xlim([start_time, end_time])
                     # self.chart.set_ylim(y.mean() * 0.9, y.mean() * 1.1)
 
                     self.fig.savefig('plot.png')
-                    time.sleep(2)
-
                 except Exception as e:
                     print(e)
 

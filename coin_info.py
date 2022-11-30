@@ -1,5 +1,6 @@
 import os
 import threading
+from datetime import datetime
 import time
 
 import pandas
@@ -36,7 +37,9 @@ class CoinInfo:
         try:
             #logging.info("%s searching price for coin %s" % (t, self.name), end=" - ")
             price = float(self.webcrawler.findElement(self))
-            print(t, self.name, price)
+
+            current_time = datetime.now().strftime("%H:%M:%S")
+            print(current_time, self.name, price)
 
             if price == -1:
                 return -1
@@ -99,7 +102,7 @@ class CoinInfo:
                 if self.price > top_band or self.price < bot_band:
                     # send chart
                     chart_signal.emit(self.name)
-                    time.sleep(1)
+                    time.sleep(3)
                     telegram.send_pic('plot.png')
 
                     # send message

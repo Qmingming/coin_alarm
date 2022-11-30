@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging
 import re
 import time
@@ -23,14 +24,14 @@ class ChromeSelenium:
         cap = DesiredCapabilities().FIREFOX
         cap["marionette"] = True
         options = webdriver.FirefoxOptions()
-        #options.add_argument('headless')
+        options.add_argument('--headless')
         #options.add_argument('disable-gpu')
         #options.add_experimental_option('useAutomationExtension', False)
         #options.add_argument('--disable-browser-side-navigation')
         #options.add_argument('--disable-blink-features=AutomationControlled')
         self.driver = webdriver.Firefox(executable_path='geckodriver.exe', options=options, capabilities=cap)
-        #self.driver.maximize_window()
-        self.driver.implicitly_wait(4)
+        self.driver.maximize_window()
+        #self.driver.implicitly_wait(4)
         #self.driver.set_page_load_timeout(10)
 
     def findElement(self, coin):
@@ -52,6 +53,9 @@ class ChromeSelenium:
                     #    EC.visibility_of_element_located((By.XPATH, coin.xpath))
                     #)
                     element = self.driver.find_elements(by=By.XPATH, value=coin.xpath)
+
+                    current_time = datetime.now().strftime("%H:%M:%S")
+                    #print(current_time, element)
                 except Exception as e:
                     print(str(e))
                     continue
@@ -71,6 +75,10 @@ class ChromeSelenium:
             else:
                 result = element
 
+            result = result.replace("ETH", "")
+            result = result.replace("WETH", "")
+            result = result.replace("WKLAY", "")
+            result = result.replace("KLAY", "")
             result = result.replace("%", "")
             result = result.replace(",", "")
             result = result.replace("$", "")
