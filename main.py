@@ -77,11 +77,16 @@ class Worker(QObject):
 class MyWindow(QMainWindow, form_class):
     coin_list = []
     chart_list = [ChartInfo() for _ in range(6)]
+    primary_screen = 0
+    win_id = 0
 
     def __init__(self):
         super().__init__()
         self.setupUi(self)
         self.tableWidget.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+
+        self.primary_screen = app.primaryScreen()
+        self.win_id = self.tableWidget.winId()
 
         self.fig = plt.Figure(figsize=(5, 5))
         self.fig.subplots_adjust(left=0.1, right=0.93, bottom=0.08, top=0.9)
@@ -97,7 +102,6 @@ class MyWindow(QMainWindow, form_class):
         self.pushButton.clicked.connect(self.test)
 
         # self.coin_list.clear()
-
         for idx, config in enumerate(configs['Data']):
             try:
                 # append coin yaml information to coin_list
@@ -166,39 +170,6 @@ class MyWindow(QMainWindow, form_class):
 
         except Exception as e:
             print(e)
-
-    '''
-    def plot(self, coin, x, y):
-        # row = int(coin.chart_num / self.col)
-        # col = int(coin.chart_num % self.col)
-        # ax1 = self.chart[row, col]
-        chart = self.chart_list[coin.chart_num]
-
-        if coin.series == 0:
-            chart.ax1.cla()
-            chart.ax1.plot(x, y, '-', label=coin.name, markersize=1, linewidth=0.8)
-            chart.ax1.grid(True)
-            chart.ax1.set_ylabel(coin.name)
-
-            legend_h, legend_l = chart.ax1.get_legend_handles_labels()
-        else:
-            # ax2 = self.chart[row, col].twinx()
-            chart.ax2.cla()
-            chart.ax2.plot(x, y, '-', label=coin.name, markersize=1, linewidth=0.8, color='red')
-            chart.ax2.set_ylabel(coin.name)
-            chart.ax1.get_legend().remove()
-            legend_h, legend_l = chart.ax1.get_legend_handles_labels()
-            legend_h2, legend_l2 = chart.ax2.get_legend_handles_labels()
-            legend_h = legend_h + legend_h2
-            legend_l = legend_l + legend_l2
-
-        chart.ax1.legend(legend_h, legend_l, loc=1)
-        chart.ax1.xaxis.set_major_locator(md.DayLocator(interval=1))
-        chart.ax1.xaxis.set_major_formatter(md.DateFormatter('%D'))
-        # plt.subplots_adjust(left=0.1, bottom=0.05, right=0.93, top=0.95, hspace=0.5, wspace=0.4)
-        self.canvas.draw()
-        # self.save_plt_image()
-    '''
 
     def table_double_clicked(self):
         try:
@@ -296,16 +267,15 @@ class MyWindow(QMainWindow, form_class):
                 return
 
     def screenshot(self):
-        screen = QtWidgets.QApplication.primaryScreen()
-        screenshot = screen.grabWindow(self.tableWidget.winId())
-        screenshot.save('table.png', 'png')
+        p = QScreen.grabWindow(self.primary_screen, self.win_id)
+        p.save('table.png', 'png')
 
     def save_table_image(self):
         QTimer.singleShot(1, self.screenshot)
 
     def test(self):
         try:
-            p = QScreen.grabWindow(app.primaryScreen(), self.tableWidget.winId())
+            p = QScreen.grabWindow(self.primary_screen, self.win_id)
             p.save('plot.png', 'png')
             telegram.send_pic('plot.png')
         except Exception as e:

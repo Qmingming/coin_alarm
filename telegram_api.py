@@ -67,6 +67,7 @@ logger = logging.getLogger(__name__)
 CHOOSING, TYPING_REPLY, TYPING_CHOICE = range(3)
 reply_keyboard = []
 
+
 # Define a few command handlers. These usually take the two arguments update and
 # context.
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -96,9 +97,11 @@ async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE) -> N
         chat_id=USER_TOKEN, text=message, parse_mode=ParseMode.HTML
     )
 
+
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
     await update.message.reply_text("Help!")
+
 
 '''
 async def get_chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -111,9 +114,9 @@ async def get_chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         print(e)
 '''
 
+
 async def get_table_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
-
     try:
         Win.screenshot()
         base_dir = os.getcwd()
@@ -122,6 +125,7 @@ async def get_table_command(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
     except Exception as e:
         print(e)
+
 
 async def turn_alarm_off(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Send a message when the command /help is issued."""
@@ -132,6 +136,7 @@ async def turn_alarm_off(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         print("alarm_stop: %s " % CoinInfo.alarm_stop)
     except Exception as e:
         print(e)
+
 
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle the inline query. This is run when you type: @botusername <query>"""
@@ -164,6 +169,7 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
     await update.inline_query.answer(results)
 
+
 async def get_chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Start the conversation and ask user for input."""
     await update.message.reply_text(
@@ -173,25 +179,25 @@ async def get_chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE) 
 
     return CHOOSING
 
+
 async def regular_choice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Ask the user for info about the selected predefined choice."""
     text = update.message.text
     context.user_data["choice"] = text
     print(text)
-    #await update.message.reply_text(f"Your {text.lower()}? Yes, I would love to hear about that!")
+    # await update.message.reply_text(f"Your {text.lower()}? Yes, I would love to hear about that!")
     Win.plot(text)
     try:
         base_dir = os.getcwd()
         filename = r'plot.png'
         pic = open(os.path.join(base_dir, filename), 'rb')
-
-
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
     except Exception as e:
         print(e)
 
     context.user_data.clear()
     return ConversationHandler.END
+
 
 async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Display the gathered info and end the conversation."""
@@ -200,15 +206,17 @@ async def done(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         del user_data["choice"]
 
     await update.message.reply_text(
-        #f"I learned these facts about you: {facts_to_str(user_data)}Until next time!",
-        #reply_markup=ReplyKeyboardRemove(),
+        # f"I learned these facts about you: {facts_to_str(user_data)}Until next time!",
+        # reply_markup=ReplyKeyboardRemove(),
     )
 
     user_data.clear()
     return ConversationHandler.END
 
+
 async def bot_send_msg(msg):
     await bot.send_message(text=msg, chat_id=CHATID_ME)
+
 
 async def bot_send_pic(pic):
     try:
@@ -218,6 +226,7 @@ async def bot_send_pic(pic):
         print("done sending pic")
     except Exception as e:
         print(e)
+
 
 def send_pic(pic):
     print("send pic")
@@ -230,6 +239,7 @@ def send_pic(pic):
     finally:
         loop.run_until_complete(bot_send_pic(pic))
 
+
 def send_msg(msg):
     print("send msg - %s" % msg)
     try:
@@ -241,11 +251,11 @@ def send_msg(msg):
     finally:
         loop.run_until_complete(bot_send_msg(msg))
 
+
 def main(myWindow):
     """Run the bot."""
     global Win
     Win = myWindow
-
 
     for idx, coin in enumerate(Win.coin_list):
         reply_keyboard.append([])
@@ -254,14 +264,13 @@ def main(myWindow):
     global markup
     markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
 
-
     # Create the Application and pass it your bot's token.
     application = Application.builder().token(USER_TOKEN).build()
 
     # on different commands - answer in Telegram
-    #application.add_handler(CommandHandler("start", start))
+    # application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("help", help_command))
-    #application.add_handler(CommandHandler("get_chart", get_chart_command))
+    # application.add_handler(CommandHandler("get_chart", get_chart_command))
     application.add_handler(CommandHandler("get_table", get_table_command))
     application.add_handler(CommandHandler("turn_alarm_off", turn_alarm_off))
 
@@ -272,7 +281,7 @@ def main(myWindow):
                 MessageHandler(
                     filters.TEXT, regular_choice
                 ),
-                #MessageHandler(filters.Regex("^Something else...$"), help),
+                # MessageHandler(filters.Regex("^Something else...$"), help),
             ],
         },
         fallbacks=[MessageHandler(filters.TEXT, done)],
@@ -281,10 +290,11 @@ def main(myWindow):
     application.add_error_handler(error_handler)
 
     # on non command i.e message - echo the message on Telegram
-    #application.add_handler(InlineQueryHandler(inline_query))
+    # application.add_handler(InlineQueryHandler(inline_query))
 
     # Run the bot until the user presses Ctrl-C
     application.run_polling()
+
 
 if __name__ == "__main__":
     main()

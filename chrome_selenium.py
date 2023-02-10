@@ -11,8 +11,8 @@ from selenium.webdriver.support import expected_conditions as EC
 
 
 class ChromeSelenium:
-    # options = webdriver.ChromeOptions()
-    # #options.add_argument('headless')
+    #options = webdriver.ChromeOptions()
+    #options.add_argument('headless')
     # options.add_argument('disable-gpu')
     # options.add_experimental_option('useAutomationExtension', False)
     # options.add_argument('--disable-browser-side-navigation')
