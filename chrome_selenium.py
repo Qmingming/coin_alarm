@@ -24,7 +24,7 @@ class ChromeSelenium:
         cap = DesiredCapabilities().FIREFOX
         cap["marionette"] = True
         options = webdriver.FirefoxOptions()
-        options.add_argument('--headless')
+        #options.add_argument('--headless')
         #options.add_argument('disable-gpu')
         #options.add_experimental_option('useAutomationExtension', False)
         #options.add_argument('--disable-browser-side-navigation')
