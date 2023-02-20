@@ -56,8 +56,8 @@ class ChromeSelenium:
 
                     current_time = datetime.now().strftime("%H:%M:%S")
                     #print(current_time, element)
-                except Exception as e:
-                    print(str(e))
+                except Exception as err:
+                    print(str(err))
                     continue
                 else:
                     break
@@ -84,9 +84,9 @@ class ChromeSelenium:
             result = result.replace("$", "")
             result = result.replace("+", "")
             #result = result.replace("-", "")
-        except Exception as e:
+        except Exception as err:
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-            message = template.format(type(e).__name__, e.args)
+            message = template.format(type(err).__name__, err.args)
             print(message)
             result = -1
         return result

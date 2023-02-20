@@ -1,16 +1,12 @@
-import os
-import threading
-from datetime import datetime
 import time
+from datetime import datetime
 
 import pandas
 import pymysql
-import logging
 from sqlalchemy import create_engine
 
-import telegram_api as telegram
-
 import chrome_selenium
+import telegram_api as telegram
 
 
 class CoinInfo:
@@ -24,8 +20,6 @@ class CoinInfo:
         self.price = None
         self.mark_price = None
 
-        self.chart_num = int(yaml_info['chart_num'])
-        self.series = int(yaml_info['series'])
         self.name = yaml_info['name']
         self.url = yaml_info['url']
         self.xpath = yaml_info['xpath']
@@ -33,11 +27,10 @@ class CoinInfo:
         self.alarm_percentage = yaml_info['alarm_percentage']
         self.ax = None
 
-    def addPrice(self, t):
+    def add_price(self, t):
+        price = float(self.webcrawler.findElement(self))
         try:
-            #logging.info("%s searching price for coin %s" % (t, self.name), end=" - ")
-            price = float(self.webcrawler.findElement(self))
-
+            # logging.info("%s searching price for coin %s" % (t, self.name), end=" - ")
             current_time = datetime.now().strftime("%H:%M:%S")
             print(current_time, self.name, price)
 
@@ -48,8 +41,8 @@ class CoinInfo:
                     price = float("{:.2f}".format(price))
                 else:
                     price = float("{:.4f}".format(price))
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            print(err)
 
         # self.ys.append(price)
         # self.ys.append(randint(0, 100))
@@ -70,19 +63,17 @@ class CoinInfo:
             msg = "INSERT INTO crypto (date, %s) VALUES ('%s', '%s')" % (self.name, t, price)
             # print(msg)
             self.cur.execute(msg)
-        except Exception as e:
-            # print(e)
+        except Exception as err:
+            if err.args[0] != 1062:
+                print(err)
             msg = "UPDATE crypto SET %s = %s WHERE date = '%s'" % (self.name, price, t)
-            self.cur.execute(msg)
-
-            # print(msg)
             self.cur.execute(msg)
         finally:
             self.conn.commit()
             self.price = price
             return price
 
-    def checkMarkCondition(self, chart_signal):
+    def check_mark_condition(self, chart_signal):
         EMOTICON_GREEN = "\U0001F7E2"
         EMOTICON_RED = "\U0001F534"
 
@@ -96,8 +87,8 @@ class CoinInfo:
                 if self.alarm_percentage == "n/a":
                     return False
                 backup_mark_price = self.mark_price
-                top_band = self.mark_price * (100 + self.alarm_percentage) / 100;
-                bot_band = self.mark_price * (100 - self.alarm_percentage) / 100;
+                top_band = self.mark_price * (100 + self.alarm_percentage) / 100
+                bot_band = self.mark_price * (100 - self.alarm_percentage) / 100
 
                 if self.price > top_band or self.price < bot_band:
                     # send chart
@@ -121,12 +112,12 @@ class CoinInfo:
                     return True
                 else:
                     return False
-        except Exception as e:
+        except Exception as err:
             template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-            message = template.format(type(e).__name__, e.args)
+            message = template.format(type(err).__name__, err.args)
             return False
 
-    def getChartData(self):
+    def get_chart_data(self):
         msg = "SELECT date, %s FROM crypto ORDER BY date DESC LIMIT %d" % (self.name, 7000)
         # day = 3
         # time_interval = 3 * 24

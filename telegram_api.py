@@ -18,9 +18,7 @@ import html
 import json
 import logging
 import os
-import threading
 import traceback
-from datetime import time
 from html import escape
 from uuid import uuid4
 
@@ -46,7 +44,7 @@ if __version_info__ < (20, 0, 0, "alpha", 1):
         f"{TG_VER} version of this example, "
         f"visit https://docs.python-telegram-bot.org/en/v{TG_VER}/examples.html"
     )
-from telegram import InlineQueryResultArticle, InputTextMessageContent, ReplyKeyboardMarkup, ReplyKeyboardRemove, Update
+from telegram import InlineQueryResultArticle, InputTextMessageContent, ReplyKeyboardMarkup, Update
 from telegram.constants import ParseMode
 from telegram.ext import (
     Application,
@@ -110,8 +108,8 @@ async def get_chart_command(update: Update, context: ContextTypes.DEFAULT_TYPE) 
     try:
         pic = open(r'D:\python_workspace\coin_alarm\plot.png', 'rb')
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
 '''
 
 
@@ -123,8 +121,8 @@ async def get_table_command(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         filename = r'table.png'
         pic = open(os.path.join(base_dir, filename), 'rb')
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
 
 
 async def turn_alarm_off(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -134,8 +132,8 @@ async def turn_alarm_off(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         print("alarm_stop: %s " % CoinInfo.alarm_stop)
         CoinInfo.alarm_stop = 1
         print("alarm_stop: %s " % CoinInfo.alarm_stop)
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
 
 
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -192,8 +190,8 @@ async def regular_choice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
         filename = r'plot.png'
         pic = open(os.path.join(base_dir, filename), 'rb')
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
 
     context.user_data.clear()
     return ConversationHandler.END
@@ -224,16 +222,16 @@ async def bot_send_pic(pic):
         print("start sending pic")
         await bot.sendPhoto(chat_id=CHATID_ME, photo=pic)
         print("done sending pic")
-    except Exception as e:
-        print(e)
+    except Exception as err:
+        print(err)
 
 
 def send_pic(pic):
     print("send pic")
     try:
         loop = asyncio.get_event_loop()
-    except RuntimeError as e:
-        print(e)
+    except RuntimeError as err:
+        print(err)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
     finally:
@@ -244,8 +242,8 @@ def send_msg(msg):
     print("send msg - %s" % msg)
     try:
         loop = asyncio.get_event_loop()
-    except RuntimeError as e:
-        print(e)
+    except RuntimeError as err:
+        print(err)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
     finally:

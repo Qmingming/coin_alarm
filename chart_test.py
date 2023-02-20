@@ -129,39 +129,6 @@ class MyWindow(QMainWindow, form_class):
     fig.canvas.draw()
     """
 
-
-def animate(i, coin_list):
-    # plt.xticks(rotation=45, ha='right')
-    # plt.subplots_adjust(bottom=0.30)
-    # plt.title('TMP102 Temperature over Time')
-    # plt.ylabel('Temperature (deg C)')
-    # plt.legend()
-    # print(time)
-    # plt.pause(5)
-
-    t = dt.datetime.now().strftime("%H:%M:%S")
-    # t = t + 1
-    for (coin, chart) in zip(coin_list, charts):
-        coin.addPrice(t)
-        chart.clear()
-        dates = matplotlib.dates.datestr2num(coin.xs)
-        chart.plot(dates, coin.ys, label=coin.name, linewidth=1)
-        # chart.set_xticks(np.arange(min(coin.xs), max(coin.xs)+1, 10), rotation=45, ha='right')
-
-        chart.xaxis.set_major_locator(md.MinuteLocator(interval=15))  # to get a tick every 15 minutes
-        chart.xaxis.set_major_formatter(md.DateFormatter('%H:%M'))  # optional formatting
-        chart.set_xlabel('time')
-        chart.set_ylabel(coin.name)
-        # chart.set_legend()`
-    plt.subplots_adjust(bottom=0.30)
-    print(t)
-    fig.canvas.draw()
-    print("exit")
-    # plt.set_title('TMP102 Temperature over Time')
-    # plt.legend()
-    # plt.pause(5)
-
-
 def run_telegram_bot():
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)

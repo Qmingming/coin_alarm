@@ -1,18 +1,14 @@
 import asyncio
 import datetime
-import logging
-import os
 import sys
 import threading
-import time
 from threading import Thread
 
 import matplotlib.dates as md
 import matplotlib.pyplot as plt
-import pandas
 import pymysql
-from PyQt5 import uic, QtWidgets
-from PyQt5.QtCore import Qt, QObject, pyqtSignal, QTimer
+from PyQt5 import uic
+from PyQt5.QtCore import Qt, QObject, pyqtSignal
 from PyQt5.QtGui import QBrush, QScreen
 from PyQt5.QtWidgets import *
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
@@ -36,7 +32,7 @@ plt.rc('legend', fontsize=MEDIUM_SIZE)  # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
 
-class ChartInfo():
+class ChartInfo:
     def __init__(self):
         self.ax1 = None
         self.ax2 = None
@@ -57,16 +53,14 @@ class Worker(QObject):
             t = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             row = 0
             for coin in coin_list:
-                price = coin.addPrice(t)
-                if price != -1:
+                price = coin.add_price(t)
+                if price != -1 and price != 0:
                     self.update_price_signal.emit(row, 1, price)
-                    if coin.checkMarkCondition(self.update_chart_signal):
+                    if coin.check_mark_condition(self.update_chart_signal):
                         self.update_price_signal.emit(row, 2, price)
                 row = row + 1
 
-                if coin.chart_num != -1:
-                    df = coin.getChartData()
-                    # self.update_chart_signal.emit(coin.name)
+                # df = coin.getChartData()
 
     def run(self):
         th = Thread(target=self.fetch_coin_price, args=(self.coin_list,))
@@ -107,15 +101,16 @@ class MyWindow(QMainWindow, form_class):
                 # append coin yaml information to coin_list
                 self.coin_list.append(CoinInfo(config))
                 # set coin name in tableWidget
-                self.setTableValue(idx, 0, config['name'])
-            except Exception as e:
-                print(e)
+                self.set_table_value(idx, 0, config['name'])
+            except Exception as err:
+                print(err)
 
-        self.SqlAddNewProperty(configs['Data'])
+        self.db_set_new_coin(configs['Data'])
 
-    def SqlAddNewProperty(self, yaml_info):
+    @staticmethod
+    def db_set_new_coin(yaml_info):
+        conn = pymysql.connect(host='127.0.0.1', user='root', password='12345', db='coin_price', charset='utf8')
         try:
-            conn = pymysql.connect(host='127.0.0.1', user='root', password='12345', db='coin_price', charset='utf8')
             cur = conn.cursor()
             t = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -134,20 +129,21 @@ class MyWindow(QMainWindow, form_class):
                     new_property_name.append(config['name'])
                     new_property_value.append('0')
             if len(new_property_name) > 0:
-                msg = "INSERT INTO crypto (date, %s) VALUES ('%s', %s)" % (s.join(new_property_name), t, s.join(new_property_value))
+                msg = "INSERT INTO crypto (date, %s) VALUES ('%s', %s)" \
+                      % (s.join(new_property_name), t, s.join(new_property_value))
                 cur.execute(msg)
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            print(err)
         finally:
             conn.commit()
 
     def run_price_alarm(self):
         worker = Worker(self.coin_list)
-        worker.update_price_signal.connect(self.setTableValue)
+        worker.update_price_signal.connect(self.set_table_value)
         worker.update_chart_signal.connect(self.plot)
         worker.run()
 
-    def setTableValue(self, row, column, value):
+    def set_table_value(self, row, column, value):
         try:
             if column == 0:
                 item = QTableWidgetItem(value)
@@ -168,8 +164,8 @@ class MyWindow(QMainWindow, form_class):
                     else:
                         item.setForeground(QBrush(Qt.black))
 
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            print(err)
 
     def table_double_clicked(self):
         try:
@@ -177,92 +173,45 @@ class MyWindow(QMainWindow, form_class):
             # column = self.tableWidget.currentIndex().column()
             selected_coin_name = self.tableWidget.item(row, 0).text()
             self.plot(selected_coin_name)
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            print(err)
 
     def plot(self, selected_coin_name):
-        # row = 3
-        # col = 2
-        #
-        # self.chart.remove()
-        # selfchart = self.canvas.figure.subplots(2, 2)
-        #
-        # for idx, c in enumerate(self.coin_list):
-        #     if idx % 4 == 0 and idx != 0:
-        #         self.canvas.draw()
-        #
-        #     if idx == 4:
-        #         break
-        #
-        #     df = c.getChartData()
-        #     x = df['date']
-        #     y = df[c.name]
-        #     ax = self.chart[int(idx / col), idx % col]
-        #     ax.plot(x, y, '-')
-        #
-        #     time_interval = 24
-        #     ax.xaxis.set_major_locator(md.DayLocator(interval=1))
-        #     ax.xaxis.set_major_formatter(md.DateFormatter('%m-%d'))
-        #     ax.xaxis.set_tick_params(which='major', pad=15)
-        #     # ax.xaxis.set_minor_locator(md.MinuteLocator(interval=(12 * 60)))
-        #     # ax.xaxis.set_minor_formatter(md.DateFormatter('%H:%M'))
-        #
-        #     ax.xaxis.remove_overlapping_locs = False
-        #
-        #     year = int(datetime.datetime.now().strftime("%Y"))
-        #     month = int(datetime.datetime.now().strftime("%m"))
-        #     day = int(datetime.datetime.now().strftime("%d"))
-        #     hour = int(datetime.datetime.now().strftime("%H"))
-        #     hour_modified = hour + (time_interval - (hour % time_interval))
-        #     if hour_modified >= 24:
-        #         day = day + 1
-        #         if day > 31:
-        #             day = 1
-        #             month = month + 1
-        #         hour_modified = 0
-        #     end_time = datetime.datetime(year, month, day, hour_modified, 0)
-        #     start_time = end_time - datetime.timedelta(days=7)
-        #
-        #     ax.set_xlim([start_time, end_time])
-        #     # ax.axes.get_xaxis().set_visible(False)
-        #     # ax.axes.get_yaxis().set_visible(False)
-        #
-        # return
-
         for coin in self.coin_list:
             if coin.name == selected_coin_name:
                 try:
-                    df = coin.getChartData()
+                    df = coin.get_chart_data()
                     x = df['date']
                     y = df[coin.name]
                     self.chart.cla()
                     # self.chart.plot(x, y, '-', label=coin.name, markersize=1, linewidth=0.8)
                     self.chart.plot(x, y, '-', label=coin.name)
                     self.chart.grid(True, which='both')
-                    #self.chart.legend(loc='best')
-                    #self.chart.set_ylabel(coin.name)
+                    # self.chart.legend(loc='best')
+                    # self.chart.set_ylabel(coin.name)
                     self.chart.set_title(coin.name, fontsize=25, pad=18)
-                    self.chart.annotate(xytext= (0.1, 0.94), xy=(0.5, 0.5), text=coin.price, xycoords='subfigure fraction',
+                    self.chart.annotate(xytext=(0.1, 0.94), xy=(0.5, 0.5), text=coin.price,
+                                        xycoords='subfigure fraction',
                                         bbox=dict(boxstyle="round,pad=0.3", fc="none"), size=11)
 
                     time_interval = 8
                     self.chart.xaxis.set_major_locator(md.DayLocator(interval=1))
                     self.chart.xaxis.set_major_formatter(md.DateFormatter('%m-%d'))
                     self.chart.xaxis.set_tick_params(which='major', pad=18)
-                    self.chart.xaxis.set_minor_locator(md.MinuteLocator(interval=(time_interval*60)))
+                    self.chart.xaxis.set_minor_locator(md.MinuteLocator(interval=(time_interval * 60)))
                     self.chart.xaxis.set_minor_formatter(md.DateFormatter('%H'))
                     self.chart.xaxis.remove_overlapping_locs = False
 
                     now = datetime.datetime.now()
-                    end_time = now + datetime.timedelta(hours=(time_interval - now.hour%time_interval))
+                    end_time = now + datetime.timedelta(hours=(time_interval - (now.hour % time_interval)))
                     start_time = end_time - datetime.timedelta(days=7)
 
                     self.chart.set_xlim([start_time, end_time])
                     # self.chart.set_ylim(y.mean() * 0.9, y.mean() * 1.1)
 
                     self.fig.savefig('plot.png')
-                except Exception as e:
-                    print(e)
+                except Exception as err:
+                    print(err)
 
                 return
 
@@ -270,31 +219,28 @@ class MyWindow(QMainWindow, form_class):
         p = QScreen.grabWindow(self.primary_screen, self.win_id)
         p.save('table.png', 'png')
 
-    def save_table_image(self):
-        QTimer.singleShot(1, self.screenshot)
-
     def test(self):
         try:
             p = QScreen.grabWindow(self.primary_screen, self.win_id)
             p.save('plot.png', 'png')
             telegram.send_pic('plot.png')
-        except Exception as e:
-            print(e)
+        except Exception as err:
+            print(err)
 
 
-def run_telegram_bot(myWindow):
+def run_telegram_bot(my_window):
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
-    loop.run_until_complete(telegram.main(myWindow))
+    loop.run_until_complete(telegram.main(my_window))
     loop.close()
 
 
 if __name__ == "__main__":
     try:
         app = QApplication(sys.argv)
-        #start_time = datetime.now().strftime("%Y%m%d_%H%M%S")
-        #logging.basicConfig(filename='start_time.log', encoding='utf-8', level=logging.DEBUG)
-        #logging.info("logging started at %s" %start_time)
+        # start_time = datetime.now().strftime("%Y%m%d_%H%M%S")
+        # logging.basicConfig(filename='start_time.log', encoding='utf-8', level=logging.DEBUG)
+        # logging.info("logging started at %s" %start_time)
 
         myWindow = MyWindow()
 
@@ -305,8 +251,8 @@ if __name__ == "__main__":
         myWindow.run_price_alarm()
         myWindow.show()
         app.exec_()
-    except Exception as e:
+    except Exception as err:
         template = "An exception of type {0} occurred. Arguments:\n{1!r}"
-        message = template.format(type(e).__name__, e.args)
+        message = template.format(type(err).__name__, err.args)
         print(message)
         result = -1
